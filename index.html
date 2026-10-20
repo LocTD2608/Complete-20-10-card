@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,7 +24,7 @@
   <script type="importmap">
   {
     "imports": {
-      "ogl": "./node_modules/ogl/src/index.js",
+      "ogl": "./components/ogl.mjs",
       "./CrystalizedBall": "./CrystalizedBall.js"
     }
   }
@@ -1076,17 +1076,82 @@
       box-sizing: border-box;
     }
 
-    /* Đóa hoa trang trí 2 bên mép dưới bức thư */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 15px;
+      background: #db2777;
+      margin-left: 3px;
+      vertical-align: middle;
+      animation: blink 0.75s infinite;
+    }
+
+    /* Khối chân thư: chứa chữ ký, nút đọc lại & 2 đóa hoa trang trí */
+    .letter-footer {
+      width: 100%;
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding-bottom: 18px;
+      box-sizing: border-box;
+      z-index: 3;
+    }
+
+    .letter-sign {
+      align-self: flex-end;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-right: 18px;
+      margin-bottom: 12px;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      position: relative;
+      z-index: 4;
+    }
+
+    .letter-sign.show {
+      opacity: 1;
+    }
+
+    .sign-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 23px;
+      font-weight: 700;
+      color: #9d174d;
+      text-shadow: 0 1px 4px rgba(244, 114, 182, 0.35);
+    }
+
+    .sign-from {
+      font-size: 12px;
+      font-weight: 700;
+      color: #be185d;
+      margin-top: -2px;
+      letter-spacing: 0.5px;
+    }
+
+    .letter-footer-action {
+      width: 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 52px;
+    }
+
+    /* Đóa hoa trang trí 2 bên mép dưới khu vực footer, tuyệt đối không đè chữ */
     .letter-deco-flower {
       position: absolute;
-      bottom: 4px;
-      width: 64px;
-      height: 64px;
+      bottom: -6px;
+      width: 66px;
+      height: 66px;
       object-fit: contain;
       pointer-events: none;
       filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
-      opacity: 0.75;
-      z-index: 1;
+      opacity: 0.85;
+      z-index: 2;
       transition: transform 0.5s ease;
     }
 
@@ -1100,56 +1165,14 @@
       transform: rotate(15deg);
     }
 
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 15px;
-      background: #db2777;
-      margin-left: 3px;
-      vertical-align: middle;
-      animation: blink 0.75s infinite;
-    }
-
-    .letter-sign {
-      align-self: flex-end;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      margin-top: 4px;
-      margin-right: 14px;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-      position: relative;
-      z-index: 2;
-    }
-
-    .letter-sign.show {
-      opacity: 1;
-    }
-
-    .sign-text {
-      font-family: 'Dancing Script', cursive;
-      font-size: 21px;
-      font-weight: 700;
-      color: #9d174d;
-    }
-
-    .sign-from {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #be185d;
-      margin-top: -2px;
-    }
-
     .replay-btn {
-      margin-top: 8px;
-      padding: 5px 20px;
+      padding: 7px 24px;
       border-radius: 999px;
       border: 1.5px solid #f472b6;
       background: linear-gradient(135deg, #fff0f6, #fce7f3);
       color: #be185d;
       font-family: 'Montserrat', sans-serif;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
       opacity: 0;
@@ -1157,7 +1180,7 @@
       transition: background 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       position: relative;
       z-index: 5;
       outline: none;
@@ -1199,60 +1222,322 @@
         line-height: 1.48;
         margin-bottom: 2px;
       }
+      .letter-footer {
+        margin-top: 8px;
+        padding-bottom: 10px;
+      }
       .letter-sign {
-        margin-top: 2px;
-        margin-right: 10px;
+        margin-bottom: 6px;
+        margin-right: 12px;
       }
       .sign-text {
-        font-size: 18px;
+        font-size: 19px;
       }
       .sign-from {
         font-size: 11px;
       }
       .replay-btn {
-        margin-top: 5px;
-        padding: 4px 16px;
+        padding: 5px 18px;
         font-size: 11px;
+      }
+      .letter-deco-flower {
+        width: 50px;
+        height: 50px;
+        bottom: -2px;
       }
     }
 
-    /* Màn hình điện thoại chiều rộng hẹp */
-    @media (max-width: 600px) {
+    /* =========================================================================
+       TỐI ƯU HÓA TOÀN DIỆN CHO THIẾT BỊ DI ĐỘNG (MOBILE OPTIMIZATION)
+       ========================================================================= */
+    @media (max-width: 768px) {
+      /* MÀN 1: INTRO */
+      #btn-scene1 {
+        bottom: max(24px, env(safe-area-inset-bottom, 24px));
+        padding: 11px 32px;
+        font-size: 14px;
+      }
+
+      /* MÀN 2: LỊCH THÁNG 10 & THẺ ẢNH PIXEL TRANSITION */
+      .calendar-frame {
+        width: min(360px, 92vw);
+        min-height: auto;
+        padding: 16px 12px 14px;
+        gap: 12px;
+        flex-direction: column;
+        border-radius: 24px;
+        margin-bottom: 16px;
+      }
+
+      .cat-card {
+        width: 155px;
+        height: 195px;
+        border-radius: 16px;
+      }
+
+      .photo-card-bottom-bar {
+        padding: 10px 8px 6px;
+      }
+
+      .photo-card-bottom-bar span {
+        font-size: 10px;
+      }
+
+      .cat-card-badge {
+        font-size: 7.5px;
+        padding: 2px 7px;
+        top: 6px;
+        right: 6px;
+      }
+
+      .calendar-3d-wrapper {
+        perspective: 800px;
+        width: min(290px, 86vw);
+      }
+
+      .calendar-page {
+        width: 100%;
+        padding: 14px 14px 10px;
+        border-radius: 18px;
+        transform: none !important; /* Không xoay 3D trên mobile để tránh tràn mép màn hình */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 25px rgba(244, 114, 182, 0.35);
+      }
+
+      .calendar-rings {
+        margin-top: -24px;
+        margin-bottom: 8px;
+      }
+
+      .calendar-ring {
+        width: 10px;
+        height: 20px;
+        border-radius: 5px;
+      }
+
+      .calendar-deco-flower {
+        width: 38px;
+        height: 38px;
+        top: -12px;
+        right: -10px;
+      }
+
+      .calendar-header-badge {
+        font-size: 7.5px;
+        letter-spacing: 1.5px;
+        margin-bottom: 1px;
+      }
+
+      .calendar-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .calendar-grid {
+        gap: 3px;
+        font-size: 10.5px;
+      }
+
+      .calendar-grid .day-header {
+        font-size: 8.5px;
+        padding: 2px 0;
+      }
+
+      .calendar-grid .day-cell {
+        padding: 2px 0;
+        height: 18px;
+        font-size: 10px;
+      }
+
+      .calendar-grid .highlight-20 {
+        transform: scale(1.15);
+      }
+
+      .highlight-20 .day-crown {
+        top: -7px;
+        right: -3px;
+        font-size: 8px;
+      }
+
+      #btn-scene2 {
+        padding: 10px 28px;
+        font-size: 13.5px;
+      }
+
+      /* MÀN 3: QUẢ CẦU 3D & LỜI CHÚC */
+      #sphere-wrapper {
+        touch-action: none;
+      }
+
+      .wish-card {
+        width: 125px;
+        left: -62.5px;
+        top: -26px;
+        padding: 6px 8px;
+        font-size: 10px;
+        line-height: 1.35;
+        border-radius: 10px;
+      }
+
+      #btn-scene3 {
+        width: min(300px, 86vw);
+        padding: 10px 16px;
+        font-size: 13px;
+        bottom: max(22px, env(safe-area-inset-bottom, 22px));
+      }
+
+      /* MÀN 4: PHONG BÌ HOÀNG GIA & BỨC THƯ */
+      .envelope-3d-stage {
+        width: min(330px, 88vw);
+        height: 206px;
+      }
+
+      .envelope-flap {
+        height: 118px;
+      }
+
+      .wax-seal {
+        top: 118px;
+        width: 72px;
+        height: 68px;
+        margin-left: -36px;
+        margin-top: -34px;
+      }
+
+      .envelope-stamp {
+        width: 44px;
+        height: 54px;
+        top: 10px;
+        right: 12px;
+      }
+
+      .envelope-stamp img {
+        width: 30px;
+        height: 30px;
+      }
+
+      .envelope-stamp span {
+        font-size: 7.5px;
+      }
+
+      .envelope-postmark {
+        width: 44px;
+        height: 44px;
+        top: 32px;
+        right: 30px;
+        font-size: 6px;
+      }
+
+      .envelope-calligraphy {
+        font-size: 16px;
+        bottom: 12px;
+        left: 16px;
+      }
+
+      .corner-quote {
+        top: max(18px, env(safe-area-inset-top, 18px));
+        font-size: 13.5px;
+        line-height: 1.38;
+      }
+
+      /* Khung lá thư trên di động */
       .letter-card {
-        width: 92vw;
+        width: min(360px, 92vw);
         padding: 14px 16px 12px;
         border-radius: 20px;
       }
+
+      .letter-corner {
+        width: 24px;
+        height: 24px;
+        top: 8px;
+        left: 8px;
+      }
+
+      .corner-tr { top: 8px; right: 8px; }
+      .corner-bl { bottom: 8px; left: 8px; }
+      .corner-br { bottom: 8px; right: 8px; }
+
+      .letter-stamp-art {
+        top: 10px;
+        right: 10px;
+      }
+
+      .stamp-box {
+        width: 36px;
+        height: 44px;
+      }
+
+      .stamp-box img {
+        width: 22px;
+        height: 22px;
+      }
+
+      .stamp-box span {
+        font-size: 7px;
+      }
+
       .letter-avatar {
-        width: 46px;
-        height: 46px;
+        width: 44px;
+        height: 44px;
       }
+
       .avatar-ribbon {
-        font-size: 10px;
+        font-size: 9.5px;
         padding: 2px 10px;
+        margin-top: 2px;
       }
+
       .letter-heading {
         font-size: 18px;
         margin-bottom: 2px;
       }
+
       .letter-divider {
+        width: 55%;
         margin-bottom: 6px;
       }
+
+      .divider-gem {
+        font-size: 9px;
+        padding: 0 6px;
+      }
+
       .letter-body {
-        font-size: 11.8px;
-        line-height: 1.5;
+        font-size: 11.5px;
+        line-height: 1.48;
         padding: 0 4px;
         margin-bottom: 3px;
       }
+
+      .letter-footer {
+        margin-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      .letter-sign {
+        margin-bottom: 6px;
+        margin-right: 8px;
+      }
+
       .sign-text {
         font-size: 18px;
       }
+
       .sign-from {
         font-size: 11px;
       }
+
+      .letter-deco-flower {
+        width: 48px;
+        height: 48px;
+        bottom: 0px;
+      }
+
+      .deco-left { left: 4px; }
+      .deco-right { right: 4px; }
+
       .replay-btn {
-        margin-top: 6px;
-        padding: 4px 16px;
+        padding: 5px 16px;
         font-size: 11px;
       }
     }
@@ -1479,7 +1764,7 @@
           <img src="images/photo_2010.png" alt="Như Quỳnh"
             style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%; border-radius: 50%; display: block;" />
         </div>
-        <div class="avatar-ribbon">Gửi chị bé :3 ✨</div>
+        <div class="avatar-ribbon">Gửi chị Như Quỳnh ✨</div>
       </div>
 
       <!-- Tiêu đề thư nghệ thuật -->
@@ -1495,26 +1780,32 @@
         <span id="typewriter-text"></span><span class="cursor" id="cursor"></span>
       </div>
 
-      <!-- Chữ ký tay bay bổng -->
-      <div class="letter-sign" id="letter-sign">
-        <span class="sign-text">With all my love ♥</span>
-        <span class="sign-from">From: Dlou ✨</span>
+      <!-- Khối chân thư: Chữ ký, Nút đọc lại & 2 đóa hoa trang trí nằm hoàn toàn phía dưới câu "Cảm ơn chị vì tất cả ạ!" -->
+      <div class="letter-footer" id="letter-footer">
+        <!-- Chữ ký tay bay bổng -->
+        <div class="letter-sign" id="letter-sign">
+          <span class="sign-text">With all my love ♥</span>
+          <span class="sign-from">From: Dlou ✨</span>
+        </div>
+
+        <!-- Khối nút đọc lại & 2 đóa hoa 2 bên cân xứng -->
+        <div class="letter-footer-action">
+          <img src="images/flower3.png" class="letter-deco-flower deco-left" alt="Deco Flower Left" />
+
+          <!-- Nút đọc lại thư thiết kế sang trọng -->
+          <button class="replay-btn" id="btn-replay">
+            <span>↻</span>
+            <span>Đọc lại bức thư</span>
+          </button>
+
+          <img src="images/flower4.png" class="letter-deco-flower deco-right" alt="Deco Flower Right" />
+        </div>
       </div>
-
-      <!-- Đóa hoa trang trí ở 2 góc đáy thư -->
-      <img src="images/flower3.png" class="letter-deco-flower deco-left" alt="Deco Flower Left" />
-      <img src="images/flower4.png" class="letter-deco-flower deco-right" alt="Deco Flower Right" />
-
-      <!-- Nút đọc lại thư thiết kế sang trọng -->
-      <button class="replay-btn" id="btn-replay">
-        <span>↻</span>
-        <span>Đọc lại bức thư</span>
-      </button>
     </div>
   </section>
 
   <script type="module">
-    import CrystalizedBall from './CrystalizedBall';
+    import CrystalizedBall from './CrystalizedBall.js';
 
     /* =========================================================================
        1. NỀN VŨ TRỤ SAO LẤP LÁNH & SAO BĂNG (bg-stars.js)
@@ -2084,7 +2375,13 @@
       });
     }
 
-    const RADIUS = Math.min(window.innerWidth, window.innerHeight) * 0.34;
+    function getSphereRadius() {
+      return window.innerWidth <= 600
+        ? window.innerWidth * 0.28
+        : Math.min(window.innerWidth, window.innerHeight) * 0.34;
+    }
+
+    let RADIUS = getSphereRadius();
     const cardElements = [];
 
     wishes.forEach((text, i) => {
@@ -2099,11 +2396,23 @@
 
       cardElements.push({
         el: card,
+        phi,
+        theta,
         x: RADIUS * Math.cos(theta) * Math.sin(phi),
         y: RADIUS * Math.sin(theta) * Math.sin(phi),
         z: RADIUS * Math.cos(phi)
       });
     });
+
+    function updateSphereDimensions() {
+      RADIUS = getSphereRadius();
+      cardElements.forEach(item => {
+        item.x = RADIUS * Math.cos(item.theta) * Math.sin(item.phi);
+        item.y = RADIUS * Math.sin(item.theta) * Math.sin(item.phi);
+        item.z = RADIUS * Math.cos(item.phi);
+      });
+    }
+    window.addEventListener('resize', updateSphereDimensions);
 
     let rotX = 0;
     let rotY = 0;
@@ -2115,6 +2424,7 @@
       isDragging = true;
       prevX = e.clientX;
       prevY = e.clientY;
+      try { sphereWrapper.setPointerCapture(e.pointerId); } catch (_) {}
     });
 
     window.addEventListener('pointermove', e => {
@@ -2127,7 +2437,11 @@
       prevY = e.clientY;
     });
 
-    window.addEventListener('pointerup', () => isDragging = false);
+    window.addEventListener('pointerup', e => {
+      isDragging = false;
+      try { sphereWrapper.releasePointerCapture(e.pointerId); } catch (_) {}
+    });
+    window.addEventListener('pointercancel', () => isDragging = false);
 
     function animateSphere() {
       if (!isDragging) {
@@ -2336,10 +2650,11 @@ Cảm ơn chị vì tất cả ạ!`;
           typingTimer = null;
           letterSign.classList.add('show');
           btnReplay.classList.add('show');
-          const cursor = document.getElementById('cursor');
-          if (cursor) {
-            cursor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
+          setTimeout(() => {
+            if (letterCard.scrollHeight > letterCard.clientHeight) {
+              letterCard.scrollTo({ top: letterCard.scrollHeight, behavior: 'smooth' });
+            }
+          }, 80);
           const rect = letterCard.getBoundingClientRect();
           spawnBurst(rect.left + rect.width / 2, rect.top + 70, 24);
         }
@@ -2356,10 +2671,11 @@ Cảm ơn chị vì tất cả ạ!`;
         typewriterEl.textContent = letterContent;
         letterSign.classList.add('show');
         btnReplay.classList.add('show');
-        const cursor = document.getElementById('cursor');
-        if (cursor) {
-          cursor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+        setTimeout(() => {
+          if (letterCard.scrollHeight > letterCard.clientHeight) {
+            letterCard.scrollTo({ top: letterCard.scrollHeight, behavior: 'smooth' });
+          }
+        }, 80);
         const rect = letterCard.getBoundingClientRect();
         spawnBurst(rect.left + rect.width / 2, rect.top + 70, 24);
       }
@@ -2408,8 +2724,9 @@ Cảm ơn chị vì tất cả ạ!`;
       }, "-=0.25");
 
       // Bước 4: Bức thư xuất hiện và trượt nảy đàn hồi (elastic) cực mượt
+      const startY = window.innerWidth <= 600 ? 70 : 130;
       tl.fromTo(letterCard,
-        { display: 'flex', opacity: 0, y: 130, scale: 0.65 },
+        { display: 'flex', opacity: 0, y: startY, scale: 0.65 },
         {
           opacity: 1,
           y: 0,
@@ -2439,6 +2756,7 @@ Cảm ơn chị vì tất cả ạ!`;
         { scale: 0.96 },
         { scale: 1, duration: 0.5, ease: "elastic.out(1.2, 0.4)" }
       );
+      letterCard.scrollTo({ top: 0, behavior: 'smooth' });
       startTyping();
     });
 

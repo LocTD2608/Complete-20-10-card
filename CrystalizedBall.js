@@ -1,4 +1,4 @@
-import { Renderer, Program, Mesh, Triangle, Geometry, RenderTarget, Texture } from 'ogl';
+import { Renderer, Program, Mesh, Triangle, Geometry, RenderTarget, Texture } from './components/ogl.mjs';
 
 export const BALL_PRESETS = {
   plasma: {

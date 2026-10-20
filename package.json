@@ -2,16 +2,9 @@
   "name": "web-20-10",
   "version": "1.0.0",
   "private": true,
-  "description": "Website Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10 với hiệu ứng Pixel Transition",
+  "description": "Website Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10 với hiệu ứng Pixel Transition & Crystalized Ball",
+  "type": "module",
   "scripts": {
     "start": "npx serve ."
-  },
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "ogl": "^1.0.11"
   }
 }
